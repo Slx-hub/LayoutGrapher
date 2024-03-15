@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 1200px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "a", "label": "a", "shape": "box", "size": 20, "x": 300, "y": 100}, {"color": "#97c2fc", "id": "\u0027", "label": "\u0027", "shape": "box", "size": 20, "x": 300, "y": 200}, {"color": "#97c2fc", "id": "y", "label": "y", "shape": "box", "size": 20, "x": 100, "y": 200}, {"color": "#97c2fc", "id": "m", "label": "m", "shape": "box", "size": 20, "x": 800, "y": 0}, {"color": "#97c2fc", "id": "v", "label": "v", "shape": "box", "size": 20, "x": 600, "y": 200}, {"color": "#97c2fc", "id": "b", "label": "b", "shape": "box", "size": 20, "x": 800, "y": 200}, {"color": "#97c2fc", "id": "u", "label": "u", "shape": "box", "size": 20, "x": 100, "y": 0}, {"color": "#97c2fc", "id": "f", "label": "f", "shape": "box", "size": 20, "x": 900, "y": 0}, {"color": "#97c2fc", "id": "p", "label": "p", "shape": "box", "size": 20, "x": 0, "y": 0}, {"color": "#97c2fc", "id": "t", "label": "t", "shape": "box", "size": 20, "x": 600, "y": 100}, {"color": "#97c2fc", "id": "k", "label": "k", "shape": "box", "size": 20, "x": 0, "y": 200}, {"color": "#97c2fc", "id": "h", "label": "h", "shape": "box", "size": 20, "x": 0, "y": 100}, {"color": "#97c2fc", "id": "r", "label": "r", "shape": "box", "size": 20, "x": 700, "y": 100}, {"color": "#97c2fc", "id": "l", "label": "l", "shape": "box", "size": 20, "x": 700, "y": 0}, {"color": "#97c2fc", "id": "g", "label": "g", "shape": "box", "size": 20, "x": 500, "y": 0}, {"color": "#97c2fc", "id": "e", "label": "e", "shape": "box", "size": 20, "x": 200, "y": 100}, {"color": "#97c2fc", "id": "n", "label": "n", "shape": "box", "size": 20, "x": 800, "y": 100}, {"color": "#97c2fc", "id": ",", "label": ",", "shape": "box", "size": 20, "x": 200, "y": 200}, {"color": "#97c2fc", "id": "o", "label": "o", "shape": "box", "size": 20, "x": 400, "y": 100}, {"color": "#97c2fc", "id": "j", "label": "j", "shape": "box", "size": 20, "x": 500, "y": 200}, {"color": "#97c2fc", "id": "i", "label": "i", "shape": "box", "size": 20, "x": 100, "y": 100}, {"color": "#97c2fc", "id": "c", "label": "c", "shape": "box", "size": 20, "x": 600, "y": 0}, {"color": "#97c2fc", "id": ";", "label": ";", "shape": "box", "size": 20, "x": 200, "y": 0}, {"color": "#97c2fc", "id": ".", "label": ".", "shape": "box", "size": 20, "x": 300, "y": 0}, {"color": "#97c2fc", "id": "w", "label": "w", "shape": "box", "size": 20, "x": 700, "y": 200}, {"color": "#97c2fc", "id": "x", "label": "x", "shape": "box", "size": 20, "x": 400, "y": 200}, {"color": "#97c2fc", "id": "s", "label": "s", "shape": "box", "size": 20, "x": 900, "y": 100}, {"color": "#97c2fc", "id": "q", "label": "q", "shape": "box", "size": 20, "x": 400, "y": 0}, {"color": "#97c2fc", "id": "d", "label": "d", "shape": "box", "size": 20, "x": 500, "y": 100}, {"color": "#97c2fc", "id": "z", "label": "z", "shape": "box", "size": 20, "x": 900, "y": 200}]);
+                  edges = new vis.DataSet([{"color": "rgb(0,0,0)", "from": "i", "to": "e", "width": 4.596678529062871}, {"color": "rgb(166,166,166)", "from": "r", "to": "s", "width": 0.753262158956109}, {"color": "rgb(89,89,89)", "from": "s", "to": "c", "width": 2.259786476868327}, {"color": "rgb(23,23,23)", "from": "h", "to": "e", "width": 3.552787663107948}, {"color": "rgb(106,106,106)", "from": "n", "to": "g", "width": 1.9395017793594305}, {"color": "rgb(182,182,182)", "from": "i", "to": "h", "width": 0.44483985765124556}, {"color": "rgb(145,145,145)", "from": "k", "to": "e", "width": 1.1743772241992882}, {"color": "rgb(176,176,176)", "from": "r", "to": "n", "width": 0.5516014234875445}, {"color": "rgb(152,152,152)", "from": "n", "to": "s", "width": 1.0379596678529062}, {"color": "rgb(103,103,103)", "from": "a", "to": "u", "width": 1.981020166073547}, {"color": "rgb(179,179,179)", "from": "r", "to": "c", "width": 0.498220640569395}, {"color": "rgb(193,193,193)", "from": "g", "to": "s", "width": 0.23131672597864766}, {"color": "rgb(18,18,18)", "from": "n", "to": "d", "width": 3.65361803084223}, {"color": "rgb(157,157,157)", "from": "n", "to": "t", "width": 0.937129300118624}, {"color": "rgb(188,188,188)", "from": "r", "to": "g", "width": 0.31435349940688023}, {"color": "rgb(200,200,200)", "from": "t", "to": "g", "width": 0.0830367734282325}, {"color": "rgb(87,87,87)", "from": "s", "to": "t", "width": 2.3072360616844603}, {"color": "rgb(200,200,200)", "from": "e", "to": ".", "width": 0.08896797153024912}, {"color": "rgb(201,201,201)", "from": "s", "to": "f", "width": 0.0771055753262159}, {"color": "rgb(191,191,191)", "from": "h", "to": "u", "width": 0.26690391459074736}, {"color": "rgb(176,176,176)", "from": "e", "to": "u", "width": 0.5575326215895611}, {"color": "rgb(150,150,150)", "from": "h", "to": "a", "width": 1.0676156583629894}, {"color": "rgb(185,185,185)", "from": "o", "to": "h", "width": 0.38552787663107946}, {"color": "rgb(194,194,194)", "from": "o", "to": "p", "width": 0.20166073546856467}, {"color": "rgb(192,192,192)", "from": "n", "to": "f", "width": 0.2491103202846975}, {"color": "rgb(179,179,179)", "from": "l", "to": "s", "width": 0.49228944246737844}, {"color": "rgb(197,197,197)", "from": "u", "to": "p", "width": 0.14234875444839856}, {"color": "rgb(175,175,175)", "from": "l", "to": "c", "width": 0.5693950177935942}, {"color": "rgb(179,179,179)", "from": "f", "to": "t", "width": 0.5041518386714116}, {"color": "rgb(199,199,199)", "from": "l", "to": "g", "width": 0.11269276393831554}, {"color": "rgb(169,169,169)", "from": "r", "to": "t", "width": 0.6998813760379596}, {"color": "rgb(194,194,194)", "from": "m", "to": "t", "width": 0.20166073546856467}, {"color": "rgb(202,202,202)", "from": "e", "to": "a", "width": 0.05338078291814947}, {"color": "rgb(196,196,196)", "from": "t", "to": "w", "width": 0.17200474495848161}, {"color": "rgb(191,191,191)", "from": "f", "to": "r", "width": 0.25504151838671413}, {"color": "rgb(201,201,201)", "from": "p", "to": "h", "width": 0.0771055753262159}, {"color": "rgb(202,202,202)", "from": "a", "to": "k", "width": 0.04744958481613286}, {"color": "rgb(188,188,188)", "from": "r", "to": "b", "width": 0.3262158956109134}, {"color": "rgb(197,197,197)", "from": "n", "to": "l", "width": 0.1482799525504152}, {"color": "rgb(203,203,203)", "from": "e", "to": "o", "width": 0.02965599051008304}, {"color": "rgb(202,202,202)", "from": "f", "to": "g", "width": 0.05338078291814947}, {"color": "rgb(178,178,178)", "from": "l", "to": "t", "width": 0.5219454329774614}, {"color": "rgb(178,178,178)", "from": "r", "to": "d", "width": 0.5160142348754448}, {"color": "rgb(191,191,191)", "from": "k", "to": "o", "width": 0.25504151838671413}, {"color": "rgb(202,202,202)", "from": "b", "to": "w", "width": 0.05338078291814947}, {"color": "rgb(202,202,202)", "from": "u", "to": ".", "width": 0.05338078291814947}, {"color": "rgb(202,202,202)", "from": "n", "to": "m", "width": 0.05338078291814947}, {"color": "rgb(190,190,190)", "from": "l", "to": "b", "width": 0.27876631079478054}, {"color": "rgb(191,191,191)", "from": "r", "to": "l", "width": 0.2609727164887307}, {"color": "rgb(185,185,185)", "from": "e", "to": ",", "width": 0.39145907473309605}, {"color": "rgb(198,198,198)", "from": "n", "to": "b", "width": 0.13641755634638197}, {"color": "rgb(202,202,202)", "from": "s", "to": "b", "width": 0.04151838671411625}, {"color": "rgb(185,185,185)", "from": "n", "to": "z", "width": 0.3736654804270462}, {"color": "rgb(203,203,203)", "from": "z", "to": "l", "width": 0.03558718861209964}, {"color": "rgb(190,190,190)", "from": "k", "to": "u", "width": 0.2846975088967971}, {"color": "rgb(195,195,195)", "from": "r", "to": "v", "width": 0.18386714116251482}, {"color": "rgb(204,204,204)", "from": ".", "to": "h", "width": 0.005931198102016607}, {"color": "rgb(196,196,196)", "from": "r", "to": "z", "width": 0.17200474495848161}, {"color": "rgb(198,198,198)", "from": "s", "to": "m", "width": 0.13641755634638197}, {"color": "rgb(190,190,190)", "from": "a", "to": "i", "width": 0.2846975088967971}, {"color": "rgb(182,182,182)", "from": "t", "to": "z", "width": 0.44483985765124556}, {"color": "rgb(199,199,199)", "from": "a", "to": ",", "width": 0.10083036773428233}, {"color": "rgb(201,201,201)", "from": "e", "to": "x", "width": 0.07117437722419928}, {"color": "rgb(201,201,201)", "from": "x", "to": "i", "width": 0.06524317912218268}, {"color": "rgb(189,189,189)", "from": "i", "to": "k", "width": 0.3084223013048636}, {"color": "rgb(201,201,201)", "from": "o", "to": ",", "width": 0.05931198102016608}, {"color": "rgb(192,192,192)", "from": "p", "to": "e", "width": 0.2372479240806643}, {"color": "rgb(203,203,203)", "from": "u", "to": ",", "width": 0.03558718861209964}, {"color": "rgb(202,202,202)", "from": "i", "to": ",", "width": 0.04151838671411625}, {"color": "rgb(195,195,195)", "from": "l", "to": "d", "width": 0.18386714116251482}, {"color": "rgb(203,203,203)", "from": "m", "to": "l", "width": 0.03558718861209964}, {"color": "rgb(203,203,203)", "from": "h", "to": "k", "width": 0.03558718861209964}, {"color": "rgb(200,200,200)", "from": "d", "to": "s", "width": 0.08896797153024912}, {"color": "rgb(195,195,195)", "from": "b", "to": "t", "width": 0.18386714116251482}, {"color": "rgb(194,194,194)", "from": "r", "to": "m", "width": 0.20166073546856467}, {"color": "rgb(194,194,194)", "from": "r", "to": "w", "width": 0.21352313167259787}, {"color": "rgb(194,194,194)", "from": "d", "to": "t", "width": 0.21352313167259787}, {"color": "rgb(203,203,203)", "from": "m", "to": "g", "width": 0.03558718861209964}, {"color": "rgb(196,196,196)", "from": "z", "to": "w", "width": 0.17200474495848161}, {"color": "rgb(198,198,198)", "from": "n", "to": "w", "width": 0.13048635824436536}, {"color": "rgb(197,197,197)", "from": "p", "to": "a", "width": 0.1542111506524318}, {"color": "rgb(203,203,203)", "from": "h", "to": "y", "width": 0.03558718861209964}, {"color": "rgb(201,201,201)", "from": "h", "to": ",", "width": 0.05931198102016608}, {"color": "rgb(200,200,200)", "from": "f", "to": "l", "width": 0.08896797153024912}, {"color": "rgb(197,197,197)", "from": "i", "to": "o", "width": 0.1482799525504152}, {"color": "rgb(204,204,204)", "from": "a", "to": "o", "width": 0.01779359430604982}, {"color": "rgb(203,203,203)", "from": "y", "to": "a", "width": 0.03558718861209964}, {"color": "rgb(197,197,197)", "from": "a", "to": ".", "width": 0.1482799525504152}, {"color": "rgb(201,201,201)", "from": ".", "to": "o", "width": 0.05931198102016608}, {"color": "rgb(202,202,202)", "from": "n", "to": "v", "width": 0.04744958481613286}, {"color": "rgb(203,203,203)", "from": "n", "to": "c", "width": 0.02965599051008304}, {"color": "rgb(202,202,202)", "from": "s", "to": "v", "width": 0.04151838671411625}, {"color": "rgb(203,203,203)", "from": "s", "to": "z", "width": 0.03558718861209964}, {"color": "rgb(203,203,203)", "from": "k", "to": ",", "width": 0.03558718861209964}, {"color": "rgb(204,204,204)", "from": "m", "to": "f", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "x", "to": "p", "width": 0.005931198102016607}, {"color": "rgb(200,200,200)", "from": "o", "to": "u", "width": 0.08896797153024912}, {"color": "rgb(204,204,204)", "from": "z", "to": "d", "width": 0.011862396204033215}, {"color": "rgb(201,201,201)", "from": "q", "to": "u", "width": 0.07117437722419928}, {"color": "rgb(204,204,204)", "from": "i", "to": ";", "width": 0.005931198102016607}, {"color": "rgb(202,202,202)", "from": "s", "to": "w", "width": 0.04744958481613286}, {"color": "rgb(204,204,204)", "from": "\u0027", "to": "o", "width": 0.005931198102016607}, {"color": "rgb(203,203,203)", "from": "u", "to": "y", "width": 0.02965599051008304}, {"color": "rgb(193,193,193)", "from": "p", "to": "i", "width": 0.21945432977461446}, {"color": "rgb(198,198,198)", "from": "m", "to": "b", "width": 0.11862396204033215}, {"color": "rgb(204,204,204)", "from": "a", "to": "q", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "i", "to": "q", "width": 0.011862396204033215}, {"color": "rgb(203,203,203)", "from": "f", "to": "z", "width": 0.02965599051008304}, {"color": "rgb(201,201,201)", "from": "e", "to": "y", "width": 0.05931198102016608}, {"color": "rgb(204,204,204)", "from": "x", "to": "o", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": ".", "to": ",", "width": 0.011862396204033215}, {"color": "rgb(203,203,203)", "from": "u", "to": "i", "width": 0.03558718861209964}, {"color": "rgb(204,204,204)", "from": "\u0027", "to": "u", "width": 0.005931198102016607}, {"color": "rgb(203,203,203)", "from": "t", "to": "v", "width": 0.02965599051008304}, {"color": "rgb(204,204,204)", "from": "d", "to": "w", "width": 0.01779359430604982}, {"color": "rgb(203,203,203)", "from": "e", "to": ";", "width": 0.02372479240806643}, {"color": "rgb(203,203,203)", "from": "m", "to": "d", "width": 0.02965599051008304}, {"color": "rgb(203,203,203)", "from": "y", "to": "p", "width": 0.03558718861209964}, {"color": "rgb(204,204,204)", "from": "y", "to": "i", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "f", "to": "w", "width": 0.011862396204033215}, {"color": "rgb(204,204,204)", "from": "b", "to": "d", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "k", "to": ".", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "e", "to": "q", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "i", "to": ".", "width": 0.011862396204033215}, {"color": "rgb(204,204,204)", "from": "h", "to": ";", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "p", "to": ".", "width": 0.005931198102016607}, {"color": "rgb(204,204,204)", "from": "b", "to": "g", "width": 0.005931198102016607}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "curvedCW"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": false,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

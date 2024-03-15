@@ -7,7 +7,11 @@ def evaluate(data, keymap):
 
 def filter_irrelevant_symbols(data, keymap):
     known_keys = ''.join(keymap['left'].keys() | keymap['right'].keys())
-    return re.sub('[^'+ known_keys + ']', ' ', data.lower())
+    data = data.lower()
+    data = data.replace('ä','a')
+    data = data.replace('ö','o')
+    data = data.replace('ü','u')
+    return re.sub('[^'+ known_keys + ']', ' ', data)
 
 
 def get_all_bigrams(data, keymap):
